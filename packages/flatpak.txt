@@ -1,0 +1,5 @@
+# Flathub apps
+com.visualstudio.code
+com.discordapp.Discord
+com.spotify.Client
+com.google.Chrome

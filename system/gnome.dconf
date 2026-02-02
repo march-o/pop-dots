@@ -1,0 +1,3 @@
+# Placeholder. Generate with:
+#   dconf dump / > system/gnome.dconf
+# Non-empty files are applied by default via scripts/20-ui.sh

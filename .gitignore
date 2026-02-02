@@ -1,0 +1,6 @@
+*.key
+id_rsa
+*.pem
+.env
+.npmrc
+credentials*
