@@ -25,6 +25,7 @@ Bootstrap a Pop!_OS (Ubuntu-based) machine with one entrypoint and an idempotent
 - `packages/flatpak.txt` — Flatpak IDs, one per line; allow comments with `#`.
 - `scripts/00-core.sh` — apt update, install apt packages, ensure flatpak + flathub.
 - `scripts/10-dev.sh` — docker + compose, docker group, git defaults (only if no ~/.gitconfig).
+- `scripts/12-shell.sh` — installs oh-my-zsh, powerlevel10k, and zsh plugins; does not edit shell rc files (managed by chezmoi).
 - `scripts/15-node.sh` — nvm install, Node LTS, Codex CLI.
 - `scripts/20-ui.sh` — GNOME/COSMIC settings + optional dconf + flatpaks.
 - `scripts/90-cleanup.sh` — apt autoremove + reminder about docker group.
@@ -56,7 +57,7 @@ Bootstrap a Pop!_OS (Ubuntu-based) machine with one entrypoint and an idempotent
 - Add npm globals to `packages/npm.txt` (one per line).
 - Add new scripts in `scripts/` and run them from `bootstrap.sh` in desired order.
 - Make new scripts executable (`chmod +x scripts/<name>.sh`).
-- When adding shell init snippets, update both `~/.zshrc` and `~/.bashrc` (zsh is default but bash may still be used).
+- Shell init is managed by chezmoi. Update `dotfiles/dot_zshrc` (and `dotfiles/dot_bashrc` if present) rather than editing `~/.zshrc` or `~/.bashrc` directly.
 - When editing shell config with `sed`, avoid `/` delimiters if the replacement contains `/`; use `|` or escape carefully. When updating block inserts, use start/end markers to avoid duplicate blocks.
 - Extend `system/gsettings.sh` for GNOME/COSMIC settings changes.
 - Add dotfiles under `dotfiles/` using chezmoi naming conventions.
