@@ -85,6 +85,7 @@ fi
 
 banner "Running setup scripts"
 NO_SUDO="$NO_SUDO" "$CHEZMOI_SRC/scripts/00-core.sh"
+NO_SUDO="$NO_SUDO" "$CHEZMOI_SRC/scripts/25-keyd.sh"
 NO_SUDO="$NO_SUDO" "$CHEZMOI_SRC/scripts/10-dev.sh"
 NO_SUDO="$NO_SUDO" "$CHEZMOI_SRC/scripts/12-shell.sh"
 NO_SUDO="$NO_SUDO" "$CHEZMOI_SRC/scripts/13-kitty.sh"
