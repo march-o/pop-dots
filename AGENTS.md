@@ -27,10 +27,12 @@ Bootstrap a Pop!_OS (Ubuntu-based) machine with one entrypoint and an idempotent
 - `scripts/10-dev.sh` — docker + compose, docker group, git defaults (only if no ~/.gitconfig).
 - `scripts/12-shell.sh` — installs oh-my-zsh, powerlevel10k, and zsh plugins; does not edit shell rc files (managed by chezmoi).
 - `scripts/15-node.sh` — nvm install, Node LTS, Codex CLI.
+- `scripts/25-keyd.sh` — optional keyd install + config when `KEYD=1`.
 - `scripts/20-ui.sh` — GNOME/COSMIC settings + optional dconf + flatpaks.
 - `scripts/90-cleanup.sh` — apt autoremove + reminder about docker group.
 - `system/gsettings.sh` — GNOME gsettings + COSMIC touchpad config.
 - `system/gnome.dconf` — optional dconf dump (applied if file is non-empty).
+- `system/keyd/default.conf` — keyd config template (installed to `/etc/keyd/default.conf`).
 - `dotfiles/README.md` — explains chezmoi dotfile layout and apply.
 
 ## Settings behavior
@@ -72,6 +74,7 @@ When you ask me to add a package (or I need to add one), use these rules for thi
 
 - Run `./bootstrap.sh --no-sudo` to validate non-root flow.
 - Run `./bootstrap.sh` for full system changes (needs sudo).
+- Run `KEYD=1 ./bootstrap.sh` to enable keyd setup.
 
 ## Codex execution note
 
