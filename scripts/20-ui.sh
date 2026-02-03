@@ -14,7 +14,7 @@ log "Applying GNOME/COSMIC settings"
 "$REPO_ROOT/system/gsettings.sh"
 
 if [[ "${NO_SUDO:-0}" -eq 0 ]]; then
-  if command -v update-alternatives >/dev/null 2>&1 && command -v kitty >/dev/null 2>&1; then
+  if command -v update-alternatives >/dev/null 2>&1 && [[ -x /usr/bin/kitty ]]; then
     log "Setting x-terminal-emulator to kitty"
     if ! sudo update-alternatives --set x-terminal-emulator /usr/bin/kitty; then
       log "Failed to set x-terminal-emulator via update-alternatives."

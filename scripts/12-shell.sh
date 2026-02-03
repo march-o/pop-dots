@@ -5,6 +5,11 @@ log() {
   echo "==> $1"
 }
 
+export GIT_TERMINAL_PROMPT=0
+export GIT_SSH_COMMAND="ssh -o BatchMode=yes"
+
+SUDO="${SUDO:-sudo -n}"
+
 if ! command -v zsh >/dev/null 2>&1; then
   log "zsh not available; skipping shell setup."
   exit 0
@@ -115,6 +120,12 @@ if command -v fd >/dev/null 2>&1; then
   alias find=fd
 fi
 
+if [[ -n "${ZSH_VERSION:-}" ]]; then
+  stty erase '^?' 2>/dev/null || true
+  bindkey -r "^H" 2>/dev/null || true
+  bindkey -r "^?" 2>/dev/null || true
+  bindkey "^?" backward-delete-char
+fi
 
 if [[ -f /usr/share/doc/fzf/examples/key-bindings.zsh ]]; then
   source /usr/share/doc/fzf/examples/key-bindings.zsh
@@ -146,6 +157,12 @@ if command -v fd >/dev/null 2>&1; then
   alias find=fd
 fi
 
+if command -v stty >/dev/null 2>&1; then
+  stty erase '^?' 2>/dev/null || true
+  bind -r '"'"'\C-h'"'"'
+  bind -r '"'"'\C-?'"'"'
+  bind '"'"'"\C-?": backward-delete-char'"'"'
+fi
 
 if [[ -f /usr/share/doc/fzf/examples/key-bindings.bash ]]; then
   source /usr/share/doc/fzf/examples/key-bindings.bash
@@ -220,7 +237,7 @@ ZSH_PATH="$(command -v zsh)"
 if [[ -n "$ZSH_PATH" && "${SHELL:-}" != "$ZSH_PATH" ]]; then
   log "Setting default shell to $ZSH_PATH"
   if [[ "${NO_SUDO:-0}" -eq 0 ]]; then
-    if ! sudo chsh -s "$ZSH_PATH" "$USER"; then
+    if ! $SUDO chsh -s "$ZSH_PATH" "$USER"; then
       log "Failed to set default shell via sudo chsh."
     fi
   else

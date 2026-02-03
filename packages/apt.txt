@@ -5,7 +5,6 @@ ripgrep
 fd-find
 fzf
 tmux
-kitty
 zsh
 neovim
 python3-venv

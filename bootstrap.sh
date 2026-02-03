@@ -25,9 +25,17 @@ done
 
 REPO="${REPO:-$SCRIPT_DIR}"
 
+export DEBIAN_FRONTEND=noninteractive
+export GIT_TERMINAL_PROMPT=0
+export GIT_SSH_COMMAND="ssh -o BatchMode=yes"
+export SUDO="sudo -n"
+
 if [[ "$NO_SUDO" -eq 0 ]]; then
   banner "Checking sudo"
-  sudo -v
+  if ! sudo -n true 2>/dev/null; then
+    echo "sudo credentials are not cached. Run 'sudo -v' in another terminal or use --no-sudo."
+    exit 1
+  fi
 
   # Keep sudo alive for the duration of the script.
   while true; do
@@ -42,8 +50,8 @@ fi
 
 if [[ "$NO_SUDO" -eq 0 ]]; then
   banner "Installing core packages"
-  sudo apt-get update
-  sudo apt-get install -y git curl ca-certificates gnupg lsb-release
+  $SUDO apt-get update
+  $SUDO apt-get install -y git curl ca-certificates gnupg lsb-release
 fi
 
 banner "Installing chezmoi"
@@ -54,24 +62,32 @@ fi
 
 export PATH="$HOME/.local/bin:$PATH"
 
-banner "Initializing chezmoi"
+banner "Initializing chezmoi source"
 if [[ -d "$REPO" ]]; then
-  chezmoi init --apply --source "$REPO"
   CHEZMOI_SRC="$REPO"
 else
-  chezmoi init --apply "$REPO"
+  # Initialize source without applying to avoid writing to $HOME.
+  chezmoi init --force "$REPO"
   CHEZMOI_SRC="$(chezmoi source-path)"
 fi
 
 if [[ -d "$CHEZMOI_SRC/dotfiles" ]]; then
-  banner "Applying dotfiles"
-  chezmoi apply --source "$CHEZMOI_SRC/dotfiles" --force
+  if find "$CHEZMOI_SRC/dotfiles" -type f \
+    ! -name 'README.md' \
+    ! -name '.chezmoiignore' \
+    -print -quit | grep -q .; then
+    banner "Applying dotfiles"
+    chezmoi apply --source "$CHEZMOI_SRC/dotfiles" --force
+  else
+    banner "Skipping dotfiles (empty)"
+  fi
 fi
 
 banner "Running setup scripts"
 NO_SUDO="$NO_SUDO" "$CHEZMOI_SRC/scripts/00-core.sh"
 NO_SUDO="$NO_SUDO" "$CHEZMOI_SRC/scripts/10-dev.sh"
 NO_SUDO="$NO_SUDO" "$CHEZMOI_SRC/scripts/12-shell.sh"
+NO_SUDO="$NO_SUDO" "$CHEZMOI_SRC/scripts/13-kitty.sh"
 NO_SUDO="$NO_SUDO" "$CHEZMOI_SRC/scripts/15-node.sh"
 NO_SUDO="$NO_SUDO" "$CHEZMOI_SRC/scripts/20-ui.sh"
 NO_SUDO="$NO_SUDO" "$CHEZMOI_SRC/scripts/90-cleanup.sh"

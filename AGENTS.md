@@ -76,3 +76,4 @@ When you ask me to add a package (or I need to add one), use these rules for thi
 
 - When you ask me to run the main script, I should use `./bootstrap.sh --no-sudo` by default because sudo prompts are not available in this environment.
 - Chezmoi applies should be non-interactive and prefer repo defaults; use `chezmoi apply --force` so local changes are overwritten without prompts.
+- All scripts should be non-interactive. Use `sudo -n` and fail fast if credentials aren't cached (user can run `sudo -v` in another terminal or use `--no-sudo`).
