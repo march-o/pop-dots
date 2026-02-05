@@ -9,6 +9,7 @@ zsh
 neovim
 python3-venv
 python3-pip
+pipx
 jq
 tree
 bat
