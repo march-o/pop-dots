@@ -18,3 +18,5 @@ unzip
 curl
 wget
 openssh-client
+r-base
+r-base-dev
