@@ -63,6 +63,7 @@ mkdir -p "$ZSH_PLUGINS_DIR"
 install_plugin "zsh-autosuggestions" "https://github.com/zsh-users/zsh-autosuggestions.git"
 install_plugin "zsh-syntax-highlighting" "https://github.com/zsh-users/zsh-syntax-highlighting.git"
 install_plugin "fzf-tab" "https://github.com/Aloxaf/fzf-tab.git"
+install_plugin "zsh-autocomplete" "https://github.com/marlonrichert/zsh-autocomplete.git"
 
 log "Skipping ~/.zshrc and ~/.bashrc edits (managed by chezmoi)."
 
