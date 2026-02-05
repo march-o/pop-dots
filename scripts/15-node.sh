@@ -9,8 +9,6 @@ SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd -- "$SCRIPT_DIR/.." && pwd)"
 NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
 NPM_LIST="$REPO_ROOT/packages/npm.txt"
-NVM_SNIPPET='export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"'
 
 if ! command -v curl >/dev/null 2>&1; then
   log "curl not available; skipping nvm/Codex install."
@@ -21,23 +19,6 @@ if [[ ! -s "$NVM_DIR/nvm.sh" ]]; then
   log "Installing nvm"
   curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 fi
-
-ensure_nvm_init() {
-  local target="$1"
-  if [[ -f "$target" ]]; then
-    if ! rg -q "NVM_DIR=.*\\.nvm" "$target"; then
-      log "Adding nvm init to $target"
-      {
-        echo ""
-        echo "# NVM"
-        echo "$NVM_SNIPPET"
-      } >> "$target"
-    fi
-  fi
-}
-
-ensure_nvm_init "$HOME/.zshrc"
-ensure_nvm_init "$HOME/.bashrc"
 
 if [[ -s "$NVM_DIR/nvm.sh" ]]; then
   log "Loading nvm"

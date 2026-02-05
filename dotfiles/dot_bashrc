@@ -1,0 +1,37 @@
+# Ensure user-local binaries are available (uv installs here by default)
+if [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
+  export PATH="$HOME/.local/bin:$PATH"
+fi
+
+# NVM (lazy load)
+export NVM_DIR="$HOME/.nvm"
+__nvm_load() {
+  unset -f nvm node npm npx __nvm_load
+  if [[ -s "$NVM_DIR/nvm.sh" ]]; then
+    # shellcheck source=/dev/null
+    . "$NVM_DIR/nvm.sh"
+    if [[ -f "$NVM_DIR/alias/default" ]]; then
+      nvm use --silent >/dev/null 2>&1 || true
+    fi
+  fi
+}
+
+nvm() {
+  __nvm_load
+  nvm "$@"
+}
+
+node() {
+  __nvm_load
+  command node "$@"
+}
+
+npm() {
+  __nvm_load
+  command npm "$@"
+}
+
+npx() {
+  __nvm_load
+  command npx "$@"
+}
