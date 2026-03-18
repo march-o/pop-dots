@@ -9,7 +9,6 @@ zsh
 neovim
 python3-venv
 python3-pip
-pipx
 jq
 tree
 bat
@@ -19,5 +18,3 @@ unzip
 curl
 wget
 openssh-client
-r-base
-r-base-dev
