@@ -26,9 +26,11 @@ Bootstrap a Pop!_OS (Ubuntu-based) machine with one entrypoint and an idempotent
 - `scripts/00-core.sh` — apt update, install apt packages, ensure flatpak + flathub.
 - `scripts/10-dev.sh` — docker + compose, docker group, git defaults (only if no ~/.gitconfig).
 - `scripts/12-shell.sh` — installs oh-my-zsh, powerlevel10k, and zsh plugins; does not edit shell rc files (managed by chezmoi).
-- `scripts/15-node.sh` — nvm install, Node LTS, Codex CLI.
-- `scripts/25-keyd.sh` — optional keyd install + config when `KEYD=1`.
+- `scripts/13-kitty.sh` — Kitty terminal via official binary installer (not from package manager).
+- `scripts/14-python.sh` — uv Python manager, default Python, pipx packages from `packages/pipx.txt`.
+- `scripts/15-node.sh` — nvm install, Node LTS, npm globals from `packages/npm.txt`.
 - `scripts/20-ui.sh` — GNOME/COSMIC settings + optional dconf + flatpaks.
+- `scripts/25-keyd.sh` — optional keyd install + config when `KEYD=1`.
 - `scripts/90-cleanup.sh` — apt autoremove + reminder about docker group.
 - `system/gsettings.sh` — GNOME gsettings + COSMIC touchpad config.
 - `system/gnome.dconf` — optional dconf dump (applied if file is non-empty).
@@ -46,6 +48,8 @@ Bootstrap a Pop!_OS (Ubuntu-based) machine with one entrypoint and an idempotent
 - Scripts use `apt-get install -y` and `flatpak install -y` which are safe to re-run.
 - `10-dev.sh` only sets git defaults if `~/.gitconfig` does not exist.
 - Docker group add only if user isn’t already in group.
+- Plugin/theme installs check for existing directories before cloning.
+- Chezmoi uses `--force` to overwrite local changes without prompts.
 
 ## No secrets
 
@@ -57,6 +61,7 @@ Bootstrap a Pop!_OS (Ubuntu-based) machine with one entrypoint and an idempotent
 - Add apt packages to `packages/apt.txt` (one per line).
 - Add Flatpaks to `packages/flatpak.txt` (one per line).
 - Add npm globals to `packages/npm.txt` (one per line).
+- Add pipx tools to `packages/pipx.txt` (one per line).
 - Add new scripts in `scripts/` and run them from `bootstrap.sh` in desired order.
 - Make new scripts executable (`chmod +x scripts/<name>.sh`).
 - Shell init is managed by chezmoi. Update `dotfiles/dot_zshrc` (and `dotfiles/dot_bashrc` if present) rather than editing `~/.zshrc` or `~/.bashrc` directly.
