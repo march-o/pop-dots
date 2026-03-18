@@ -9,12 +9,17 @@ Bootstrap a Pop!_OS (Ubuntu-based) machine with one entrypoint and an idempotent
 ## Running / Testing
 
 ```bash
-./bootstrap.sh --no-sudo   # Validate non-root flow (safe for this environment)
-./bootstrap.sh             # Full system changes (requires sudo cached via sudo -v)
-KEYD=1 ./bootstrap.sh      # Enable keyd keyboard remapping setup
+./bootstrap.sh --no-sudo          # Validate non-root flow (no sudo/apt changes; still applies dotfiles + UI)
+./bootstrap.sh                    # Full system changes (requires sudo cached via sudo -v)
+KEYD=1 ./bootstrap.sh             # Enable keyd keyboard remapping setup
+./bootstrap.sh /path/to/local     # Use explicit local repo path
+curl -fsSL <url> | bash -s -- <repo-url>  # Bootstrap from remote
 ```
 
-All scripts must be non-interactive. Use `sudo -n` and fail fast if credentials aren't cached.
+- Local path → `chezmoi init --apply --source <path>`
+- Remote URL → `chezmoi init --apply <repo>`
+
+All scripts must be non-interactive. Use `sudo -n` and fail fast if credentials aren't cached. Default to `--no-sudo` when sudo prompts are unavailable.
 
 ## Architecture
 
@@ -33,7 +38,7 @@ All scripts must be non-interactive. Use `sudo -n` and fail fast if credentials 
 
 **Shell config** is managed exclusively by chezmoi. Edit `dotfiles/dot_zshrc` / `dotfiles/dot_bashrc` instead of `~/.zshrc` / `~/.bashrc`.
 
-**GNOME/COSMIC settings** live in `system/gsettings.sh`. COSMIC uses its own config file at `~/.config/cosmic/...`; dconf is applied when `system/gnome.dconf` is non-empty.
+**GNOME/COSMIC settings** live in `system/gsettings.sh`. GNOME uses `gsettings`; COSMIC writes `~/.config/cosmic/com.system76.CosmicComp/v1/input_touchpad` directly. dconf is applied automatically when `system/gnome.dconf` is non-empty.
 
 ## Adding New Stuff
 
