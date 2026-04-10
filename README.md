@@ -8,7 +8,6 @@ Bootstrap a Pop!_OS (Ubuntu-based) machine with one command.
 git clone <repo>
 cd pop-setup
 ./bootstrap.sh
-KEYD=1 ./bootstrap.sh
 ./bootstrap.sh --no-sudo
 ```
 
@@ -27,7 +26,7 @@ curl -fsSL <raw bootstrap.sh url> | bash -s -- <repo-url>
 - Package lists: `packages/apt.txt` and `packages/flatpak.txt`
 - GNOME settings: `system/gsettings.sh`
 - Optional dconf: create `system/gnome.dconf` (non-empty files are applied by default)
-- Keyd (optional): set `KEYD=1` to install/configure keyd from `system/keyd/default.conf`
+- Keyd: installed and configured by default from `system/keyd/default.conf` (laptop keyboard only)
 - Dotfiles live in `dotfiles/` (see `dotfiles/README.md`)
 
 Notes:

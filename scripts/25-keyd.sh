@@ -23,11 +23,6 @@ install_keyd() {
   $SUDO apt-get install -y keyd
 }
 
-if [[ -z "${KEYD:-}" ]]; then
-  log "KEYD not set; skipping keyd setup."
-  exit 0
-fi
-
 if [[ "${NO_SUDO:-0}" -eq 1 ]]; then
   log "NO_SUDO=1 set; skipping keyd setup."
   exit 0

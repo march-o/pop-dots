@@ -11,7 +11,6 @@ Bootstrap a Pop!_OS (Ubuntu-based) machine with one entrypoint and an idempotent
 ```bash
 ./bootstrap.sh --no-sudo          # Validate non-root flow (no sudo/apt changes; still applies dotfiles + UI)
 ./bootstrap.sh                    # Full system changes (requires sudo cached via sudo -v)
-KEYD=1 ./bootstrap.sh             # Enable keyd keyboard remapping setup
 ./bootstrap.sh /path/to/local     # Use explicit local repo path
 curl -fsSL <url> | bash -s -- <repo-url>  # Bootstrap from remote
 ```
@@ -33,7 +32,7 @@ All scripts must be non-interactive. Use `sudo -n` and fail fast if credentials 
 - `scripts/14-python.sh` — uv Python manager, pipx packages from `packages/pipx.txt`
 - `scripts/15-node.sh` — nvm, Node LTS, npm globals from `packages/npm.txt`
 - `scripts/20-ui.sh` — GNOME/COSMIC settings, dconf, flatpak apps from `packages/flatpak.txt`
-- `scripts/25-keyd.sh` — keyd install + config (conditional on `KEYD=1`)
+- `scripts/25-keyd.sh` — keyd install + config (always runs; targets internal keyboard only via `0001:0001`)
 - `scripts/90-cleanup.sh` — apt autoremove + docker group reminder
 
 **Shell config** is managed exclusively by chezmoi. Edit `dotfiles/dot_zshrc` / `dotfiles/dot_bashrc` instead of `~/.zshrc` / `~/.bashrc`.
