@@ -14,6 +14,13 @@ log "Applying GNOME/COSMIC settings"
 "$REPO_ROOT/system/gsettings.sh"
 
 if [[ "${NO_SUDO:-0}" -eq 0 ]]; then
+  SLEEP_HOOK_SRC="$REPO_ROOT/system/cosmic-retile-sleep.sh"
+  SLEEP_HOOK_DST="/lib/systemd/system-sleep/cosmic-retile"
+  if [[ -f "$SLEEP_HOOK_SRC" ]]; then
+    log "Installing COSMIC retile sleep hook"
+    sudo install -m 0755 "$SLEEP_HOOK_SRC" "$SLEEP_HOOK_DST"
+  fi
+
   if command -v update-alternatives >/dev/null 2>&1 && [[ -x /usr/bin/kitty ]]; then
     log "Setting x-terminal-emulator to kitty"
     if ! sudo update-alternatives --set x-terminal-emulator /usr/bin/kitty; then
