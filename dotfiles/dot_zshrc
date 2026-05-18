@@ -30,6 +30,7 @@ _tab_or_fzf() {
 }
 zle -N _tab_or_fzf
 bindkey '^I' _tab_or_fzf
+bindkey '^H' backward-kill-word
 
 # NVM
 export NVM_DIR="$HOME/.nvm"
