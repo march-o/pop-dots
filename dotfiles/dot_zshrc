@@ -12,10 +12,24 @@ export ZSH="$HOME/.oh-my-zsh"
 # Theme
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
+# Completion: history first, fzf-powered tab as fallback
+ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+
 # Plugins
-plugins=(git fzf zoxide direnv zsh-autocomplete zsh-autosuggestions zsh-syntax-highlighting fzf-tab)
+plugins=(git fzf zoxide direnv zsh-autosuggestions zsh-syntax-highlighting fzf-tab)
 
 source $ZSH/oh-my-zsh.sh
+
+# Tab: accept ghost suggestion if present, otherwise open fzf completion
+_tab_or_fzf() {
+  if [[ -n "$POSTDISPLAY" ]]; then
+    zle autosuggest-accept
+  else
+    zle fzf-tab-complete
+  fi
+}
+zle -N _tab_or_fzf
+bindkey '^I' _tab_or_fzf
 
 # NVM
 export NVM_DIR="$HOME/.nvm"
